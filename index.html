@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jezelle Formentera — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF8F4;
+    --cream-mid: #F0EDE6;
+    --ink: #1C1917;
+    --ink-soft: #44403C;
+    --ink-muted: #78716C;
+    --accent: #8B6F47;
+    --accent-light: #C4A882;
+    --accent-pale: #F5EFE6;
+    --border: #E5DDD0;
+    --white: #FFFFFF;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250, 248, 244, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; max-width: 900px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-tagline {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 520px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--ink);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  .hero-scroll {
+    margin-top: 5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ink-muted);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-light);
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 3rem;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-light);
+    margin: 1.5rem 0 3rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-photo-frame {
+    position: relative;
+  }
+
+  .about-photo-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--cream-mid);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--ink-muted);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+
+  .about-photo-placeholder svg {
+    width: 36px;
+    height: 36px;
+    opacity: 0.4;
+  }
+
+  .about-content p {
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+    font-size: 15px;
+  }
+
+  .about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .tag {
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    background: var(--white);
+  }
+
+  /* SKILLS */
+  .skills-section { background: var(--accent-pale); padding: 6rem 2rem; }
+  .skills-inner { max-width: 900px; margin: 0 auto; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+  }
+
+  .skill-card-title {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skill-list li {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    padding-left: 0.9rem;
+    position: relative;
+  }
+
+  .skill-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent-light);
+    font-size: 11px;
+    top: 3px;
+  }
+
+  /* PROJECTS */
+  .projects-list { display: flex; flex-direction: column; gap: 0; }
+
+  .project-item {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: start;
+    transition: background 0.2s;
+  }
+
+  .project-item:last-child { border-bottom: 1px solid var(--border); }
+
+  .project-meta {}
+
+  .project-number {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .project-role {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-type {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .project-content {}
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+  }
+
+  .project-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-bullets li {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    padding-left: 1rem;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .project-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tech-tag {
+    padding: 0.2rem 0.7rem;
+    background: var(--cream-mid);
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .project-link {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--accent-light);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .project-link:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* EXPERIENCE */
+  .exp-item {
+    border-left: 1px solid var(--border);
+    padding-left: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .exp-item::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    position: absolute;
+    left: -4px;
+    top: 6px;
+  }
+
+  .exp-date {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .exp-title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .exp-company {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .exp-bullets li {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    padding-left: 1rem;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .exp-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* CERTIFICATIONS & SEMINARS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .cert-card {
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    background: var(--white);
+  }
+
+  .cert-issuer {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-name {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .seminar-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .seminar-list li {
+    border-left: 2px solid var(--accent-light);
+    padding-left: 1.25rem;
+  }
+
+  .seminar-name {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .seminar-org {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .about-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+  /* CONTACT */
+  .contact-section { background: var(--ink); padding: 6rem 2rem; }
+  .contact-inner { max-width: 900px; margin: 0 auto; }
+
+  .contact-section .section-label { color: var(--accent-light); }
+
+  .contact-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .contact-sub {
+    color: #A8A29E;
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 480px;
+    margin-bottom: 3rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .contact-link:hover { color: var(--accent-light); }
+
+  .contact-link-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #78716C;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    color: #57534E;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; animation-delay: 0.1s; }
+  .hero-name { animation: fadeUp 0.7s ease both; animation-delay: 0.2s; }
+  .hero-tagline { animation: fadeUp 0.7s ease both; animation-delay: 0.35s; }
+  .hero-cta { animation: fadeUp 0.7s ease both; animation-delay: 0.5s; }
+  .hero-scroll { animation: fadeUp 0.7s ease both; animation-delay: 0.65s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 680px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .project-item { grid-template-columns: 1fr; gap: 1rem; }
+    .project-number { font-size: 2rem; margin-bottom: 0.25rem; }
+    .certs-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">Jezelle Formentera</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero" style="padding: 6rem 2rem 4rem;">
+  <p class="hero-eyebrow">Portfolio — Jezelle Formentera</p>
+  <h1 class="hero-name">Junior Web<br><em>Developer</em></h1>
+  <p class="hero-tagline">BS Information Technology graduate with a passion for building clean, functional, and thoughtfully designed web experiences. Detail-oriented, self-driven, and open to work.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="#contact" class="btn-outline">Get in Touch</a>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-line"></span>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">About Me</h2>
+
+  <div class="about-grid">
+    <div class="about-photo-frame">
+      <div class="about-photo-placeholder">
+         <img src="hero2.jpg" alt="About Photo" class="about-photo">
+      </div>
+    </div>
+
+    <div class="about-content">
+      <p>I'm a fresh BS Information Technology graduate from the University of the East, Manila — someone who genuinely cares about both how things work and how they look. I don't just build things to make them functional; I build them to feel complete.</p>
+      <p>During my studies, I led and deployed a live capstone project — an online reservation and billing system that's currently in active use by a resort in Tanay, Rizal. During my internship at KMA Business Solutions OPC, I developed their company website from scratch, including a backend for contact and content management.</p>
+      <p>I work best when I can combine technical problem-solving with aesthetic awareness. I analyze before I act, I ask questions until I understand, and I care deeply about the small details most people skip.</p>
+
+      <div class="about-tags">
+        <span class="tag">Adaptable</span>
+        <span class="tag">UI/UX Conscious</span>
+        <span class="tag">Detail-Oriented</span>
+        <span class="tag">Self-Driven</span>
+        <span class="tag">Fast Learner</span>
+        <span class="tag">Open to Work</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="skills-section" id="skills">
+  <div class="skills-inner">
+    <p class="section-label">Technical Skills</p>
+    <h2 class="section-title" style="margin-bottom: 1rem;">What I work with</h2>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <p class="skill-card-title">Languages</p>
+        <ul class="skill-list">
+          <li>HTML & CSS</li>
+          <li>JavaScript</li>
+          <li>Python</li>
+          <li>Java</li>
+          <li>C#</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title">Web & Database</p>
+        <ul class="skill-list">
+          <li>MySQL</li>
+          <li>XAMPP</li>
+          <li>Website Hosting</li>
+          <li>Deployment</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title">Design & Tools</p>
+        <ul class="skill-list">
+          <li>Figma</li>
+          <li>Adobe Photoshop</li>
+          <li>Blender</li>
+          <li>Canva</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title">Dev Tools</p>
+        <ul class="skill-list">
+          <li>Git & GitHub</li>
+          <li>VS Code</li>
+          <li>MS Office</li>
+          <li>Google Workspace</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Major Projects</p>
+  <h2 class="section-title">Things I've built</h2>
+
+  <div class="projects-list">
+
+    <div class="project-item">
+      <div class="project-meta">
+        <div class="project-number">01</div>
+        <p class="project-role">Lead Programmer & Project Leader</p>
+        <p class="project-type">Capstone Project · 3 Semesters</p>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Online Reservation & Billing System</h3>
+        <p class="project-desc">A fully deployed reservation and billing system built for Rainbow Forest Paradise Resort and Campsite in Tanay, Rizal — currently in active use by the company.</p>
+        <ul class="project-bullets">
+          <li>Led the full project cycle: proposal, development, testing, and deployment</li>
+          <li>Communicated directly with the client for requirements, revisions, and validation</li>
+          <li>Managed team coordination across three semesters</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">MySQL</span>
+          <span class="tech-tag">PHP</span>
+        </div>
+        <a href="https://www.rainbowforestparadiseresortandcampsite.com/" target="_blank" class="project-link">Visit Live Site →</a>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-meta">
+        <div class="project-number">02</div>
+        <p class="project-role">Developer</p>
+        <p class="project-type">OJT Project</p>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">KMA Business Solutions — Company Website</h3>
+        <p class="project-desc">Built the official company website for KMA Business Solutions OPC during internship, including a functional backend for contact inquiry and content management.</p>
+        <ul class="project-bullets">
+          <li>Developed frontend and backend independently</li>
+          <li>Implemented contact inquiry form with backend handling</li>
+          <li>Delivered a live, client-ready website</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">MySQL</span>
+        </div>
+        <a href="https://kmabusinessgroupph.com/" target="_blank" class="project-link">Visit Live Site →</a>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-meta">
+        <div class="project-number">03</div>
+        <p class="project-role">Project Leader</p>
+        <p class="project-type">Mini Thesis</p>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Dental Clinic Management System</h3>
+        <p class="project-desc">A system analysis and design project conducted with an actual dental clinic, from requirements gathering through to a working prototype.</p>
+        <ul class="project-bullets">
+          <li>Conducted client interviews and requirements gathering</li>
+          <li>Created system analysis, design documentation, and prototype</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">Systems Analysis</span>
+          <span class="tech-tag">UI/UX Design</span>
+          <span class="tech-tag">Prototyping</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-meta">
+        <div class="project-number">04</div>
+        <p class="project-role">Developer</p>
+        <p class="project-type">Integrative Programming</p>
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Apparel E-Commerce Website</h3>
+        <p class="project-desc">A full-stack e-commerce website for an apparel brand, developed and deployed with complete web hosting setup.</p>
+        <ul class="project-bullets">
+          <li>Built front-end with modern, aesthetic UI</li>
+          <li>Implemented MySQL database and backend logic</li>
+          <li>Handled web hosting and live deployment</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">MySQL</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="background: var(--cream-mid); max-width: 100%; padding: 6rem 2rem;">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <h2 class="section-title">Experience & Education</h2>
+
+    <div class="exp-item">
+      <p class="exp-date">December 2025 – March 2026</p>
+      <h3 class="exp-title">IT Intern (On-the-Job Training)</h3>
+      <p class="exp-company">KMA Business Solutions OPC · Taft, Manila</p>
+      <ul class="exp-bullets">
+        <li>Developed the company website with backend for contact inquiry and content management</li>
+        <li>Organized and managed client digital files in Google Drive</li>
+        <li>Assisted in desktop setup and basic IT infrastructure support</li>
+        <li>Supported auditing and accounting workflows, adapting quickly to a business environment</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <p class="exp-date">2023 – 2026</p>
+      <h3 class="exp-title">Capstone Lead — Online Reservation & Billing System</h3>
+      <p class="exp-company">University of the East · Capstone Project</p>
+      <ul class="exp-bullets">
+        <li>Led a three-semester project from proposal to live deployment</li>
+        <li>Served as both Lead Programmer and Project Leader</li>
+        <li>Managed client communications and team coordination throughout the project lifecycle</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <p class="exp-date">2022 – 2026</p>
+      <h3 class="exp-title">BS Information Technology</h3>
+      <p class="exp-company">University of the East · Manila City, Philippines</p>
+    </div>
+
+    <!-- Certifications -->
+    <p class="section-label" style="margin-top: 3rem;">Certifications</p>
+    <div class="certs-grid" style="margin-top: 1.25rem;">
+      <div class="cert-card">
+        <p class="cert-issuer">Certiport</p>
+        <p class="cert-name">Information Technology Specialist — HTML and CSS</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Certiport</p>
+        <p class="cert-name">Information Technology Specialist — Cybersecurity</p>
+      </div>
+    </div>
+
+    <!-- Seminars -->
+    <p class="section-label" style="margin-top: 3rem;">Seminars & Trainings</p>
+    <ul class="seminar-list">
+      <li>
+        <p class="seminar-name">Industrial Networking Essentials Course</p>
+        <p class="seminar-org">CISCO · February 2026</p>
+      </li>
+      <li>
+        <p class="seminar-name">Digital Edge: Innovate, Secure, Automate Webinar</p>
+        <p class="seminar-org">DICT · March 2026</p>
+      </li>
+      <li>
+        <p class="seminar-name">Skills to Succeed Academy</p>
+        <p class="seminar-org">Accenture · March 2026</p>
+      </li>
+    </ul>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <p class="section-label">Contact</p>
+    <h2 class="contact-title">Let's work together.</h2>
+    <p class="contact-sub">I'm currently open to junior developer roles in Metro Manila. Feel free to reach out.</p>
+
+    <div class="contact-links">
+      <a href="mailto:formenterajezelle@gmail.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        formenterajezelle@gmail.com
+      </a>
+      <a href="tel:09214140442" class="contact-link">
+        <span class="contact-link-label">Mobile</span>
+        09214140442
+      </a>
+      <a href="https://www.linkedin.com/in/jezelle-formentera-9a0786410/" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        Jezelle Formentera
+      </a>
+      <div class="contact-link" style="cursor: default;">
+        <span class="contact-link-label">Location</span>
+        Sampaloc, Manila · Open to Metro Manila roles
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
