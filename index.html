@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jezelle Formentera — Full-Stack Developer</title>
+<title>Jezelle Formentera — Full-Stack Developer &amp; QA</title>
+<link rel="icon" type="image/jpeg" href="assets/images/title-img.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,11 +22,13 @@
     --text-soft: #A7AFC4;
     --text-muted: #666F8A;
     --accent: #F2A65A;
-    --accent-soft: rgba(91, 140, 255, 0.12);
+    --accent-soft: rgba(242, 166, 90, 0.12);
     --live: #3ECF8E;
     --live-soft: rgba(62, 207, 142, 0.12);
     --amber: #FFB454;
     --amber-soft: rgba(255, 180, 84, 0.12);
+    --qa: #64D9C9;
+    --qa-soft: rgba(100, 217, 201, 0.12);
     --display: 'Space Grotesk', sans-serif;
     --body: 'Inter', sans-serif;
     --mono: 'JetBrains Mono', monospace;
@@ -61,6 +64,26 @@
     pointer-events: none;
   }
 
+  /* AMBIENT PARTICLE-GRID BACKGROUND — full page, sits behind all content */
+  #particle-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* SCROLL PROGRESS BAR */
+  #scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+ 
   /* DOCK NAV — floating control bar, bottom-center */
   nav {
     position: fixed;
@@ -80,7 +103,7 @@
     animation: dock-in 0.7s cubic-bezier(.2,.8,.2,1) both;
     animation-delay: 0.9s;
   }
-
+ 
   @keyframes dock-in {
     from { opacity: 0; transform: translate(-50%, 14px); }
     to { opacity: 1; transform: translate(-50%, 0); }
@@ -148,6 +171,62 @@
     100% { box-shadow: 0 0 0 0 rgba(62,207,142,0); }
   }
 
+  /* mobile hamburger toggle — hidden on desktop */
+  .nav-toggle {
+    display: none;
+    position: relative;
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .nav-toggle span {
+    position: absolute;
+    left: 7px;
+    right: 7px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.28s ease, opacity 0.2s ease, top 0.28s ease;
+  }
+  .nav-toggle span:nth-child(1) { top: 11px; }
+  .nav-toggle span:nth-child(2) { top: 17px; }
+  .nav-toggle span:nth-child(3) { top: 23px; }
+  .nav-toggle.open span:nth-child(1) { top: 17px; transform: rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { top: 17px; transform: rotate(-45deg); }
+
+  /* full-screen mobile menu overlay */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(9, 11, 17, 0.97);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.1rem;
+    transform: translateY(-8%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .mobile-menu a {
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+  .mobile-menu .status-pill { margin-top: 0.5rem; }
+
   @media (max-width: 720px) {
     nav {
       left: 1rem; right: 1rem; bottom: 1rem;
@@ -157,6 +236,7 @@
       gap: 0.75rem;
     }
     .nav-links { display: none; }
+    .nav-toggle { display: block; }
   }
 
   /* SECTIONS */
@@ -310,59 +390,54 @@
     color: var(--text);
     margin-bottom: 2.5rem;
   }
-
-  /* ABOUT / PROFILE CARD */
-  .about-grid {
+/* ABOUT */
+  .about-meta-grid {
     display: grid;
-    grid-template-columns: 1fr 1.35fr;
-    gap: 2.5rem;
-    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 2.5rem;
   }
-
-  .profile-card {
-    border: 1px solid var(--border);
+ 
+  .about-meta-item {
     background: var(--surface);
-    border-radius: 8px;
-    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
   }
-
-  .profile-photo-wrap {
-    width: 100%;
-    aspect-ratio: 4/5;
-    background: var(--bg-alt);
-    overflow: hidden;
-    border-bottom: 1px solid var(--border);
+ 
+  .about-meta-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
   }
-  .profile-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .profile-meta { padding: 1.25rem 1.4rem 1.5rem; }
-
-  .profile-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
+ 
+  .about-meta-value {
+    display: block;
+    font-size: 13.5px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
   }
-  .profile-row:last-child { border-bottom: none; }
-  .profile-row-label { color: var(--text-muted); font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.02em; }
-  .profile-row-value { color: var(--text); font-weight: 500; text-align: right; }
-
+ 
+  .about-content { max-width: 720px; border-left: 2px solid var(--accent); padding-left: 1.5rem; }
+ 
   .about-content p {
     color: var(--text-soft);
     margin-bottom: 1.25rem;
     font-weight: 300;
     font-size: 15px;
   }
-
+ 
   .about-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
     margin-top: 2rem;
   }
-
+ 
   .tag {
     padding: 0.4rem 0.9rem;
     border: 1px solid var(--border);
@@ -391,6 +466,9 @@
     transition: border-color 0.2s;
   }
   .skill-card:hover { border-color: var(--border-strong); }
+  .skill-card.is-qa { border-color: rgba(100,217,201,0.35); }
+  .skill-card.is-qa .skill-card-title { color: var(--qa); }
+  .skill-card.is-qa .skill-list li::before { background: var(--qa); }
 
   .skill-card-title {
     font-family: var(--mono);
@@ -455,6 +533,8 @@
   .status-badge.is-live { color: var(--live); background: var(--live-soft); }
   .status-badge.is-progress { color: var(--amber); background: var(--amber-soft); }
   .status-badge.is-archived { color: var(--text-muted); background: rgba(102,111,138,0.12); }
+  .status-badge.is-qa { color: var(--qa); background: var(--qa-soft); }
+  .status-badge.is-showcase { color: var(--accent); background: var(--accent-soft); }
   .status-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
   .project-body { padding: 1.9rem 1.9rem 2.1rem; }
@@ -623,23 +703,51 @@
   .exp-bullets li { font-size: 13.5px; color: var(--text-soft); padding-left: 1.1rem; position: relative; font-weight: 300; }
   .exp-bullets li::before { content: '>'; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); font-size: 12px; }
 
-  /* CERTIFICATIONS & SEMINARS */
-  .certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  /* CREDENTIALS (certifications + seminars, with images) */
+  .credentials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
 
   .cert-card {
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1.4rem 1.5rem;
+    border-radius: 8px;
     background: var(--surface);
+    overflow: hidden;
+    transition: border-color 0.2s;
   }
-
-  .cert-issuer { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 500; margin-bottom: 0.6rem; }
+  .cert-card:hover { border-color: var(--border-strong); }
+  .cert-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .cert-card-body { padding: 1.1rem 1.3rem 1.3rem; }
+  .cert-issuer { font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; }
   .cert-name { font-size: 13.5px; color: var(--text); font-weight: 400; line-height: 1.4; }
 
-  .seminar-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
-  .seminar-list li { border-left: 2px solid var(--border-strong); padding-left: 1.25rem; }
-  .seminar-name { font-size: 14px; color: var(--text); font-weight: 400; }
-  .seminar-org { font-size: 12px; color: var(--text-muted); font-family: var(--mono); margin-top: 0.15rem; }
+  .seminar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+  .seminar-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .seminar-card:hover { border-color: var(--border-strong); }
+  .seminar-card img { width: 100%; height: 110px; object-fit: cover; display: block; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .seminar-card-body { padding: 0.9rem 1.05rem 1.1rem; }
+  .seminar-org { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.03em; color: var(--accent); font-weight: 500; margin-bottom: 0.35rem; }
+  .seminar-name { font-size: 12.5px; color: var(--text); line-height: 1.4; }
 
   /* CONTACT */
   .contact-section {
@@ -731,35 +839,55 @@
   /* RESPONSIVE */
   @media (max-width: 720px) {
     .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .certs-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
+    .credentials-grid { grid-template-columns: 1fr; }
+    .seminar-grid { grid-template-columns: 1fr 1fr; }
     .project-gallery { grid-template-columns: repeat(3, 1fr); }
     .project-gallery img { height: 85px; }
     .hero-stats { gap: 1.6rem; flex-wrap: wrap; }
     section { padding: 4.5rem 1.25rem; }
   }
+
+  @media (max-width: 460px) {
+    .seminar-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
+
+<canvas id="particle-bg"></canvas>
 
 <!-- NAV -->
 <nav>
   <a href="#home" class="nav-logo">jezelle<span>.</span>dev</a>
   <ul class="nav-links">
     <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
     <li><a href="#projects">projects</a></li>
     <li><a href="#experience">experience</a></li>
     <li><a href="#contact">contact</a></li>
   </ul>
   <span class="status-pill"><span class="status-dot"></span>available</span>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">about</a>
+  <a href="#skills">skills</a>
+  <a href="#projects">projects</a>
+  <a href="#experience">experience</a>
+  <a href="#contact">contact</a>
+  <span class="status-pill"><span class="status-dot"></span>available</span>
+</div>
 
 <!-- HERO -->
 <section id="home" class="hero">
   <div class="dot-grid"></div>
-  <p class="hero-eyebrow"><span class="path-accent">~/portfolio</span> · jezelle-formentera · BS IT, 2026</p>
+  <p class="hero-eyebrow"><span class="path-accent">~portfolio</span> · jezelle-c-formentera · UE MANILA · BSIT, 2026</p>
   <h1 class="hero-name">Jezelle Formentera<span class="role-line"><span id="typed-role"></span><span class="type-cursor"></span></span></h1>
-  <p class="hero-tagline">I build and ship full-stack web systems — from database schema to deployment. My capstone system has been running live for a real business since before I graduated. Detail-oriented, self-driven, and open to work.</p>
+  <p class="hero-tagline">I build and deploy full-stack web applications — from database design to production deployment — with a strong focus on reliability and quality. Our capstone reservation system has been deployed and is actively used by a real business. Detail-oriented, proactive, and currently open to work.</p>
   <div class="hero-cta">
     <a href="#projects" class="btn-primary">View Projects →</a>
     <a href="#contact" class="btn-outline">Get in Touch</a>
@@ -770,8 +898,8 @@
       <div class="hero-stat-label">systems live in production</div>
     </div>
     <div>
-      <div class="hero-stat-num" data-target="3" data-suffix="">0</div>
-      <div class="hero-stat-label">semesters leading a real client project</div>
+      <div class="hero-stat-num" data-target="50" data-suffix="+">0</div>
+      <div class="hero-stat-label">test cases designed &amp; executed</div>
     </div>
     <div>
       <div class="hero-stat-num" data-target="4" data-suffix="+">0</div>
@@ -783,45 +911,39 @@
 <!-- ABOUT -->
 <section id="about" class="reveal">
   <p class="section-label">about</p>
-  <h2 class="section-title">Who's building this</h2>
-  <div class="about-grid">
-    <div class="profile-card">
-      <div class="profile-photo-wrap">
-        <img src="hero_image.jpg" alt="Jezelle Formentera">
-      </div>
-      <div class="profile-meta">
-        <div class="profile-row">
-          <span class="profile-row-label">STATUS</span>
-          <span class="profile-row-value" style="color: var(--live);">● Open to work</span>
-        </div>
-        <div class="profile-row">
-          <span class="profile-row-label">FOCUS</span>
-          <span class="profile-row-value">Full-stack web dev</span>
-        </div>
-        <div class="profile-row">
-          <span class="profile-row-label">BASED IN</span>
-          <span class="profile-row-value">Sampaloc, Manila</span>
-        </div>
-        <div class="profile-row">
-          <span class="profile-row-label">GRAD</span>
-          <span class="profile-row-value">BS IT, 2026 · UE Manila</span>
-        </div>
-      </div>
+  <h2 class="section-title">About Me</h2>
+ 
+  <div class="about-meta-grid">
+    <div class="about-meta-item">
+      <span class="about-meta-label">STATUS</span>
+      <span class="about-meta-value" style="color: var(--live);">● Open to work</span>
     </div>
-
-    <div class="about-content">
-      <p>I'm a fresh BS Information Technology graduate from the University of the East, Manila — someone who genuinely cares about both how systems work and how they feel to use. I believe good software should function well under real conditions, not just in a demo.</p>
-      <p>During my studies, I led and deployed a live capstone project — an online reservation and billing system that's currently in active use by a resort in Tanay, Rizal. During my internship at KMA Business Solutions OPC, I built their company website from scratch, including a backend for contact and content management.</p>
-      <p>I work best when I can combine technical problem-solving with an eye for design. I'm analytical in my approach, proactive in seeking understanding, and attentive to the details that decide whether a system actually holds up in production.</p>
-
-      <div class="about-tags">
-        <span class="tag">full-stack</span>
-        <span class="tag">ui/ux-aware</span>
-        <span class="tag">client-facing</span>
-        <span class="tag">fast-learner</span>
-        <span class="tag">detail-oriented</span>
-        <span class="tag">reliable</span>
-      </div>
+    <div class="about-meta-item">
+      <span class="about-meta-label">FOCUS</span>
+      <span class="about-meta-value">Full-stack dev &amp; QA</span>
+    </div>
+    <div class="about-meta-item">
+      <span class="about-meta-label">BASED IN</span>
+      <span class="about-meta-value">Sampaloc, Manila</span>
+    </div>
+    <div class="about-meta-item">
+      <span class="about-meta-label">GRAD</span>
+      <span class="about-meta-value">BSIT, 2026 · UE Manila</span>
+    </div>
+  </div>
+ 
+  <div class="about-content">
+    <p>I'm a fresh BS Information Technology graduate from the University of the East, Manila — someone who genuinely cares about both how systems work and how they hold up under real conditions. I believe good software should function well in production, not just in a demo.</p>
+    <p>During my studies, I led and deployed a live capstone project — an online reservation and billing system currently in active use by a resort in Tanay, Rizal — and, in a separate QA/testing course, designed and executed 50+ structured test cases for a bus reservation system, documenting prerequisites, test data, and pass/fail results. During my internship at KMA Business Solutions OPC, I worked as a web developer and IT support intern, building the company website from scratch while also handling hardware and desktop troubleshooting for staff.</p>
+    <p>I work best when I can combine technical problem-solving with an eye for detail. I'm analytical in my approach, proactive in seeking understanding, and attentive to the small things that decide whether a system actually holds up — whether I'm building it or testing it.</p>
+ 
+    <div class="about-tags">
+      <span class="tag">full-stack</span>
+      <span class="tag">qa &amp; testing</span>
+      <span class="tag">ui/ux-aware</span>
+      <span class="tag">client-facing</span>
+      <span class="tag">detail-oriented</span>
+      <span class="tag">reliable</span>
     </div>
   </div>
 </section>
@@ -851,6 +973,16 @@
           <li>Deployment</li>
         </ul>
       </div>
+      <div class="skill-card is-qa">
+        <p class="skill-card-title">qa &amp; testing</p>
+        <ul class="skill-list">
+          <li>Test Case Design</li>
+          <li>Test Plan Documentation</li>
+          <li>Functional / Black-box Testing</li>
+          <li>Bug &amp; Defect Tracking</li>
+          <li>Regression Testing (basic)</li>
+        </ul>
+      </div>
       <div class="skill-card">
         <p class="skill-card-title">design &amp; tools</p>
         <ul class="skill-list">
@@ -876,10 +1008,11 @@
 <!-- PROJECTS -->
 <section id="projects" class="reveal">
   <p class="section-label">projects</p>
-  <h2 class="section-title">Things I've shipped</h2>
+  <h2 class="section-title">Featured Projects</h2>
 
   <div class="projects-list">
 
+    <!-- 1. Capstone: reservation system (LIVE) -->
     <div class="project-card">
       <div class="project-topbar">
         <div class="window-dots"><span></span><span></span><span></span></div>
@@ -887,18 +1020,23 @@
       </div>
       <div class="project-body">
         <p class="project-role">LEAD PROGRAMMER &amp; PROJECT LEADER<span class="sep">/</span>CAPSTONE · 3 SEMESTERS</p>
-        <h3 class="project-title">Online Reservation &amp; Billing System</h3>
+        <h3 class="project-title">Online Reservation &amp; Billing System</h3> 
         <p class="project-desc">A fully deployed reservation and billing system built for Rainbow Forest Paradise Resort and Campsite in Tanay, Rizal — currently in active use by the company.</p>
+         <div class="project-gallery">
+          <img src="assets/images/capstone1.png" alt="Capstone" onclick="window.open(this.src)">
+          <img src="assets/images/capstone2.png" alt="Capstone" onclick="window.open(this.src)">
+          <img src="assets/images/capstone3.png" alt="Capstone" onclick="window.open(this.src)">
+        </div>
         <ul class="project-bullets">
           <li>Led the full project cycle: proposal, development, testing, and deployment</li>
           <li>Communicated directly with the client for requirements, revisions, and validation</li>
           <li>Managed team coordination across three semesters</li>
         </ul>
         <div class="project-tech">
-          <span class="tech-tag">HTML/CSS</span>
-          <span class="tech-tag">JavaScript</span>
           <span class="tech-tag">MySQL</span>
           <span class="tech-tag">PHP</span>
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
         </div>
         <div class="project-links">
           <a href="https://www.rainbowforestparadiseresortandcampsite.com/" target="_blank" class="project-link">Visit live site →</a>
@@ -915,26 +1053,28 @@
             <p>I was Lead Programmer and Project Leader across all three semesters of development. That meant owning the technical architecture end-to-end — the database schema, the booking and billing logic, and the deployment — while also running client meetings, translating what the resort actually needed into a build plan, and coordinating the rest of the team.</p>
           </div>
           <div class="case-study-block">
-            <p class="case-study-label">key decisions</p>
-            <p>[Edit this with 2–3 specifics only you know: e.g. how you structured the database to prevent double-bookings, how billing calculations were handled, any tradeoffs between what the client wanted and what was technically feasible in the timeline.]</p>
-          </div>
-          <div class="case-study-block">
             <p class="case-study-label">outcome</p>
-            <p>The system was deployed and is actively used by the resort today for real bookings and billing — it didn't stay a classroom exercise. [Edit this with any measurable detail you have, e.g. roughly how many bookings it now handles, or specific feedback from the client.]</p>
+            <p>The system was deployed and is actively used by the resort today for real bookings and billing — it didn't stay a classroom exercise.</p>
           </div>
         </div>
       </div>
     </div>
 
+     <!-- 2. KMA website (LIVE) -->
     <div class="project-card">
       <div class="project-topbar">
         <div class="window-dots"><span></span><span></span><span></span></div>
         <span class="status-badge is-live"><span class="dot"></span>LIVE</span>
       </div>
       <div class="project-body">
-        <p class="project-role">DEVELOPER<span class="sep">/</span>OJT PROJECT</p>
+        <p class="project-role">WEB DEVELOPER<span class="sep">/</span>OJT PROJECT</p>
         <h3 class="project-title">KMA Business Solutions OPC — Company Website</h3>
         <p class="project-desc">Built the official company website for KMA Business Solutions OPC during internship, including a functional backend for contact inquiry and content management.</p>
+        <div class="project-gallery">
+          <img src="assets/images/ojt1.png" alt="OJT" onclick="window.open(this.src)">
+          <img src="assets/images/ojt2.png" alt="OJT" onclick="window.open(this.src)">
+          <img src="assets/images/ojt3.png" alt="OJT" onclick="window.open(this.src)">
+        </div>
         <ul class="project-bullets">
           <li>Developed frontend and backend independently</li>
           <li>Implemented contact inquiry form with backend handling</li>
@@ -951,28 +1091,109 @@
       </div>
     </div>
 
+    <!-- 3. QA case study: Bus Reservation System test cases -->
     <div class="project-card">
       <div class="project-topbar">
         <div class="window-dots"><span></span><span></span><span></span></div>
-        <span class="status-badge is-progress"><span class="dot"></span>IN PROGRESS</span>
+        <span class="status-badge is-qa"><span class="dot"></span>QA CASE STUDY</span>
       </div>
       <div class="project-body">
-        <p class="project-role">PROJECT LEADER<span class="sep">/</span>MINI THESIS</p>
-        <h3 class="project-title">Dental Clinic Management System</h3>
-        <p class="project-desc">A system analysis and design project conducted with an actual dental clinic, from requirements gathering through to a working prototype.</p>
+        <p class="project-role">QA TESTER<span class="sep">/</span>SOFTWARE QUALITY ASSURANCE COURSEWORK</p>
+        <h3 class="project-title">Bus Reservation System — Test Case Design &amp; Execution</h3>
+        <p class="project-desc">Assigned as the QA on a team project, I designed and executed 50 structured test cases for a bus reservation system, covering functional flows like user registration and booking.</p>
+        <div class="project-gallery">
+          <img src="assets/images/qa-test.png" alt="Sample test case sheet for the bus reservation system, showing test data and pass results" onclick="window.open(this.src)">
+        </div>
         <ul class="project-bullets">
-          <li>Conducted client interviews and requirements gathering</li>
-          <li>Created system analysis, design documentation, and prototype</li>
+          <li>Wrote 50 test cases with prerequisites, test data, step-by-step actions, and expected vs. actual results</li>
+          <li>Tracked outcomes as Pass / Fail / Not Executed for each test run</li>
+          <li>Applied positive and negative test case design to cover edge cases, not just the happy path</li>
+          <li>Coordinated with a Business Analyst for test case review and sign-off</li>
         </ul>
         <div class="project-tech">
-          <span class="tech-tag">Systems Analysis</span>
-          <span class="tech-tag">UI/UX Design</span>
-          <span class="tech-tag">Prototyping</span>
+          <span class="tech-tag">Test Case Design</span>
+          <span class="tech-tag">Functional Testing</span>
+          <span class="tech-tag">Google Sheets</span>
         </div>
-        <p class="project-note">// redesign in progress — revisiting the UI/UX with what I've learned since</p>
+        <div class="project-links">
+          <button class="case-study-toggle" onclick="var b=document.getElementById('case-study-qa'); b.classList.toggle('open'); this.textContent = b.classList.contains('open') ? '↑ hide case study' : '→ read case study';">→ read case study</button>
+        </div>
+
+        <div class="case-study-body" id="case-study-qa">
+          <div class="case-study-block">
+            <p class="case-study-label">the problem</p>
+            <p>Our team needed a dedicated QA role to catch issues before they reached the rest of the group — someone to verify the bus reservation system actually behaved as intended across normal and edge-case inputs, not just the paths a developer tests while building.</p>
+          </div>
+          <div class="case-study-block">
+            <p class="case-study-label">my role</p>
+            <p>As the assigned QA, I reviewed feature requirements, then wrote test cases covering each one — specifying prerequisites, exact test data, expected results, and a place to log actual results and status. I ran each case manually, logged Pass/Fail outcomes, and flagged discrepancies back to the team for fixes, then re-verified after changes were made.</p>
+          </div>
+          <div class="case-study-block">
+            <p class="case-study-label">outcome</p>
+            <p>50 documented test cases across the system's core flows, with a clear audit trail of what was tested, with what data, and what the result was — the same habit of thoroughness I carried into my internship, where it helped me catch errors in client documents before submission.</p>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- 4. Premium e-commerce (UI showcase) -->
+    <div class="project-card">
+      <div class="project-topbar">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <span class="status-badge is-showcase"><span class="dot"></span>UI SHOWCASE</span>
+      </div>
+      <div class="project-body">
+        <p class="project-role">DESIGNER &amp; DEVELOPER<span class="sep">/</span>PERSONAL PROJECT</p>
+        <h3 class="project-title">Premium E-Commerce Website</h3>
+        <p class="project-desc">A high-end e-commerce concept built to push my UI skills further — refined layout, product presentation, and cart flow beyond what my earlier coursework projects required.</p>
+        <div class="project-gallery">
+          <img src="assets/images/luxe-img1.png" alt="Luxe" onclick="window.open(this.src)">
+          <img src="assets/images/luxe-img2.png" alt="Luxe" onclick="window.open(this.src)">
+          <img src="assets/images/luxe-img3.png" alt="Luxe" onclick="window.open(this.src)">
+        </div>
+        <ul class="project-bullets">
+          <li>Designed a premium visual identity: typography, spacing, and product photography treatment</li>
+          <li>Built responsive product and cart pages from scratch</li>
+          <li>Focused on UI polish and micro-interactions over base functionality</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">Figma</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Multimedia project (Photoshop + Blender) -->
+    <div class="project-card">
+      <div class="project-topbar">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <span class="status-badge is-showcase"><span class="dot"></span>CREATIVE</span>
+      </div>
+      <div class="project-body">
+        <p class="project-role">DIGITAL ARTIST<span class="sep">/</span>MULTIMEDIA COURSEWORK</p>
+        <h3 class="project-title">Multimedia Project — Photoshop &amp; Blender</h3>
+        <p class="project-desc">Outside of web work, I also explored digital art and 3D — a photo composite in Photoshop and rendered scenes in Blender, part of my multimedia coursework in college.</p>
+        <div class="project-gallery">
+          <img src="assets/images/multimedia1.png" alt="Multimedia" onclick="window.open(this.src)">
+          <img src="assets/images/multimedia2.png" alt="Multimedia" onclick="window.open(this.src)">
+          <img src="assets/images/multimedia3.png" alt="Multimedia" onclick="window.open(this.src)">
+          <img src="assets/images/multimedia4.png" alt="Multimedia" onclick="window.open(this.src)">
+          <img src="assets/images/multimedia5.png" alt="Multimedia" onclick="window.open(this.src)">
+          <img src="assets/images/multimedia6.png" alt="Multimedia" onclick="window.open(this.src)">
+        </div>
+        <ul class="project-bullets">
+          <li>Composited and retouched a digital scene in Adobe Photoshop</li>
+          <li>Modeled, lit, and rendered two 3D scenes in Blender</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">Adobe Photoshop</span>
+          <span class="tech-tag">Blender</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Apparel e-commerce (archived) -->
     <div class="project-card">
       <div class="project-topbar">
         <div class="window-dots"><span></span><span></span><span></span></div>
@@ -1000,6 +1221,28 @@
       </div>
     </div>
 
+    <!-- 7. Dental clinic (in progress) -->
+    <div class="project-card">
+      <div class="project-topbar">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <span class="status-badge is-progress"><span class="dot"></span>IN PROGRESS</span>
+      </div>
+      <div class="project-body">
+        <p class="project-role">PROJECT LEADER<span class="sep">/</span>MINI THESIS</p>
+        <h3 class="project-title">Dental Clinic Management System</h3>
+        <p class="project-desc">A system analysis and design project conducted with an actual dental clinic, from requirements gathering through to a working prototype.</p>
+        <ul class="project-bullets">
+          <li>Conducted client interviews and requirements gathering</li>
+          <li>Created system analysis, design documentation, and prototype</li>
+        </ul>
+        <div class="project-tech">
+          <span class="tech-tag">Systems Analysis</span>
+          <span class="tech-tag">UI/UX Design</span>
+          <span class="tech-tag">Prototyping</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1011,12 +1254,13 @@
 
     <div class="exp-item">
       <p class="exp-date">DEC 2025 — MAR 2026</p>
-      <h3 class="exp-title">IT Intern (On-the-Job Training)</h3>
+      <h3 class="exp-title">Web Developer &amp; IT Support Intern</h3>
       <p class="exp-company">KMA Business Solutions OPC · Taft, Manila</p>
       <ul class="exp-bullets">
         <li>Developed the company website with backend for contact inquiry and content management</li>
+        <li>Provided hardware and desktop troubleshooting support for staff computers and peripherals</li>
         <li>Organized and maintained client files and documentation in compliance with office procedures</li>
-        <li>Assisted in desktop setup and basic IT infrastructure support</li>
+        <li>Reviewed client documents for accuracy before submission, applying close attention to detail</li>
         <li>Supported auditing and accounting workflows, adapting quickly to a business environment</li>
       </ul>
     </div>
@@ -1033,41 +1277,67 @@
     </div>
 
     <div class="exp-item">
+      <p class="exp-date">JANUARY - MAY 2025</p>
+      <h3 class="exp-title">QA Tester — Software Quality Assurance Coursework</h3>
+      <p class="exp-company">University of the East · Group Project</p>
+      <ul class="exp-bullets">
+        <li>Assigned as QA on a team project; designed and executed 50 test cases for a bus reservation system</li>
+        <li>Documented defects and verified fixes through regression checks</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
       <p class="exp-date">2022 — 2026</p>
       <h3 class="exp-title">BS Information Technology</h3>
       <p class="exp-company">University of the East · Manila City, Philippines</p>
     </div>
+  </div>
+</section>
 
-    <!-- Certifications -->
-    <p class="section-label" style="margin-top: 3.5rem;">certifications</p>
-    <div class="certs-grid" style="margin-top: 1.5rem;">
-      <div class="cert-card">
+<!-- CREDENTIALS (Certifications & Seminars, with images) -->
+<section id="credentials" class="reveal">
+  <p class="section-label">credentials</p>
+  <h2 class="section-title">Certifications &amp; seminars</h2>
+
+  <div class="credentials-grid">
+    <div class="cert-card">
+      <img src="assets/images/cert-htmlcss.png" alt="Certiport IT Specialist HTML and CSS certificate" onclick="window.open(this.src)">
+      <div class="cert-card-body">
         <p class="cert-issuer">CERTIPORT</p>
         <p class="cert-name">Information Technology Specialist — HTML and CSS</p>
       </div>
-      <div class="cert-card">
+    </div>
+    <div class="cert-card">
+      <img src="assets/images/cert-cybersecurity.png" alt="Certiport IT Specialist Cybersecurity certificate" onclick="window.open(this.src)">
+      <div class="cert-card-body">
         <p class="cert-issuer">CERTIPORT</p>
         <p class="cert-name">Information Technology Specialist — Cybersecurity</p>
       </div>
     </div>
+  </div>
 
-    <!-- Seminars -->
-    <p class="section-label" style="margin-top: 3.5rem;">seminars &amp; trainings</p>
-    <ul class="seminar-list">
-      <li>
+  <div class="seminar-grid">
+    <div class="seminar-card">
+      <img src="assets/images/seminar-cisco.png" alt="CISCO Industrial Networking Essentials certificate" onclick="window.open(this.src)">
+      <div class="seminar-card-body">
+        <p class="seminar-org">CISCO · FEB 2026</p>
         <p class="seminar-name">Industrial Networking Essentials Course</p>
-        <p class="seminar-org">CISCO · February 2026</p>
-      </li>
-      <li>
+      </div>
+    </div>
+    <div class="seminar-card">
+      <img src="assets/images/seminar-dict.png" alt="DICT Digital Edge webinar certificate" onclick="window.open(this.src)">
+      <div class="seminar-card-body">
+        <p class="seminar-org">DICT · MAR 2026</p>
         <p class="seminar-name">Digital Edge: Innovate, Secure, Automate Webinar</p>
-        <p class="seminar-org">DICT · March 2026</p>
-      </li>
-      <li>
+      </div>
+    </div>
+    <div class="seminar-card">
+      <img src="assets/images/seminar-accenture.png" alt="Accenture Skills to Succeed Academy certificate" onclick="window.open(this.src)">
+      <div class="seminar-card-body">
+        <p class="seminar-org">ACCENTURE · MAR 2026</p>
         <p class="seminar-name">Skills to Succeed Academy</p>
-        <p class="seminar-org">Accenture · March 2026</p>
-      </li>
-    </ul>
-
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1077,7 +1347,7 @@
   <div class="contact-inner">
     <p class="section-label">contact</p>
     <h2 class="contact-title">Let's build something.</h2>
-    <p class="contact-sub">I'm currently open to junior developer roles in Metro Manila. Feel free to reach out.</p>
+    <p class="contact-sub">I'm currently open to junior developer and QA roles in Metro Manila. Feel free to reach out.</p>
 
     <a href="assets/resume/Formentera_Jezelle_CV.pdf" download class="resume-btn">Download Résumé</a>
 
@@ -1125,20 +1395,36 @@
     revealEls.forEach(function(el) { observer.observe(el); });
   }
 
-  // hero role line — typewriter effect
+  // hero role line — typewriter, rotates between dev + QA identity
   var typedEl = document.getElementById('typed-role');
-  var roleText = 'junior full-stack developer';
+  var roles = ['junior full-stack developer', 'QA / software tester'];
   if (typedEl) {
     if (prefersReduced) {
-      typedEl.textContent = roleText;
+      typedEl.textContent = roles[0];
     } else {
-      var i = 0;
-      var typeSpeed = 45;
-      (function typeChar() {
-        if (i <= roleText.length) {
-          typedEl.textContent = roleText.slice(0, i);
-          i++;
-          setTimeout(typeChar, typeSpeed);
+      var roleIdx = 0, charIdx = 0, deleting = false;
+      var typeSpeed = 45, deleteSpeed = 28, holdTime = 1600, gapTime = 400;
+      (function tick() {
+        var current = roles[roleIdx];
+        if (!deleting) {
+          charIdx++;
+          typedEl.textContent = current.slice(0, charIdx);
+          if (charIdx === current.length) {
+            deleting = true;
+            setTimeout(tick, holdTime);
+            return;
+          }
+          setTimeout(tick, typeSpeed);
+        } else {
+          charIdx--;
+          typedEl.textContent = current.slice(0, charIdx);
+          if (charIdx === 0) {
+            deleting = false;
+            roleIdx = (roleIdx + 1) % roles.length;
+            setTimeout(tick, gapTime);
+            return;
+          }
+          setTimeout(tick, deleteSpeed);
         }
       })();
     }
@@ -1178,6 +1464,119 @@
       statEls.forEach(animateCount);
     }
   }
+
+  // mobile hamburger menu
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  if (navToggle && mobileMenu) {
+    navToggle.addEventListener('click', function() {
+      var isOpen = mobileMenu.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    mobileMenu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+  }
+
+  // AMBIENT PARTICLE-GRID BACKGROUND
+  (function() {
+    var canvas = document.getElementById('particle-bg');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, nodes = [];
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var LINK_DIST = 130;
+    var accentColor = '91,140,255';
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      var count = Math.min(85, Math.round((W * H) / 16000));
+      nodes = [];
+      for (var i = 0; i < count; i++) {
+        nodes.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          r: 1 + Math.random() * 1.4
+        });
+      }
+    }
+
+    var scrollOffset = 0;
+    function onScroll() {
+      scrollOffset = window.scrollY * 0.04;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        var dy = n.y + (scrollOffset % H);
+        for (var j = i + 1; j < nodes.length; j++) {
+          var m = nodes[j];
+          var dmy = m.y + (scrollOffset % H);
+          var dx = n.x - m.x, dyy = dy - dmy;
+          var dist = Math.sqrt(dx * dx + dyy * dyy);
+          if (dist < LINK_DIST) {
+            var alpha = (1 - dist / LINK_DIST) * 0.18;
+            ctx.strokeStyle = 'rgba(' + accentColor + ',' + alpha + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(n.x, ((dy % H) + H) % H);
+            ctx.lineTo(m.x, ((dmy % H) + H) % H);
+            ctx.stroke();
+          }
+        }
+      }
+      for (var k = 0; k < nodes.length; k++) {
+        var p = nodes[k];
+        var py = ((p.y + (scrollOffset % H)) % H + H) % H;
+        ctx.beginPath();
+        ctx.arc(p.x, py, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + accentColor + ',0.45)';
+        ctx.fill();
+      }
+    }
+
+    function step() {
+      for (var i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0) n.x = W; if (n.x > W) n.x = 0;
+        if (n.y < 0) n.y = H; if (n.y > H) n.y = 0;
+      }
+      draw();
+      raf = requestAnimationFrame(step);
+    }
+
+    var raf;
+    resize();
+    window.addEventListener('resize', resize);
+
+    if (prefersReduced) {
+      draw();
+    } else {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      raf = requestAnimationFrame(step);
+    }
+  })();
 </script>
 
 </body>
