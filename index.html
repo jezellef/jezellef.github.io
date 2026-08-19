@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jezelle Formentera — Full-Stack Developer &amp; QA</title>
-<meta name="description" content="Portfolio of Jezelle Formentera — full-stack developer and QA tester from Manila. Live capstone reservation system, 50+ test cases, and client-facing web development work.">
+<meta name="description" content="Portfolio of Jezelle Formentera — full-stack developer and QA tester from Manila. Live capstone reservation system, 40 test cases, and client-facing web development work.">
 <meta name="theme-color" content="#6B0000">
 <meta property="og:title" content="Jezelle Formentera — Full-Stack Developer &amp; QA">
 <meta property="og:description" content="Full-stack developer &amp; QA tester based in Manila. Live projects, structured testing, and client-facing web development.">
@@ -369,8 +369,10 @@
   .md-item.active { background: var(--paper); }
   .md-item.active::before { background: var(--maroon); }
 
+  .md-item-main { display: contents; }
   .md-item-title { display: block; font-family: var(--display); font-size: 15.5px; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; line-height: 1.32; }
   .md-item-role { display: block; font-family: var(--mono); font-size: 10px; color: var(--ink-muted); letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+  .md-chevron { display: none; }
 
   .md-item-status {
     display: inline-flex;
@@ -444,24 +446,56 @@
   .project-links { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center; }
   .project-link { font-size: 12px; font-family: var(--mono); color: var(--maroon); text-decoration: none; font-weight: 600; transition: color 0.2s; }
   .project-link:hover { color: var(--deep-red); }
-  .case-study-toggle { font-size: 12px; font-family: var(--mono); color: var(--ink-muted); text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; transition: color 0.2s; padding: 0; }
-  .case-study-toggle:hover { color: var(--maroon); }
-
-  .case-study-body { display: none; margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px dashed var(--line-strong); }
-  .case-study-body.open { display: block; }
-  .case-study-block { margin-bottom: 1.1rem; }
-  .case-study-block:last-child { margin-bottom: 0; }
-  .case-study-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--gold); font-weight: 600; margin-bottom: 0.45rem; }
-  .case-study-block p { font-size: 13px; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
 
   @media (max-width: 820px) {
+    /* Mobile: the master/detail pattern becomes a single-column accordion.
+       Each project is a full-width row you tap to expand in place —
+       no swiping, no separate panel to hunt for. */
     #projects .section-label, #projects .section-title { padding: 0 1.25rem; }
-    .md-layout { grid-template-columns: 1fr; }
-    .md-list { border-right: none; border-bottom: 1px solid var(--line); display: flex; overflow-x: auto; }
-    .md-item { border-bottom: none; border-right: 1px solid var(--line); flex-shrink: 0; width: 220px; padding: 1rem 1.2rem; }
-    .md-item::before { top: auto; bottom: 0; left: 0; right: 0; width: auto; height: 3px; }
+    .md-layout { grid-template-columns: 1fr; border-top: none; }
     .md-connector { display: none; }
-    .md-panel { padding: 1.5rem 1.25rem 1.75rem; max-width: none; }
+
+    .md-list { border-right: none; display: block; }
+
+    .md-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      width: 100%;
+      flex-shrink: 1;
+      padding: 1rem 1.25rem;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+    .md-item::before { top: 0; bottom: auto; left: 0; right: auto; width: 3px; height: 100%; }
+    .md-item.active { background: var(--gold-soft); }
+
+    .md-item-main { display: block; flex: 1; min-width: 0; }
+
+    .md-chevron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      margin-top: 0.1rem;
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--ink-muted);
+      transition: transform 0.25s ease, color 0.2s ease;
+    }
+    .md-item.active .md-chevron { transform: rotate(180deg); color: var(--maroon); }
+
+    /* the detail panel is moved (not copied) into place directly under its
+       row by JS, so there's exactly one accordion per project — no duplicated content */
+    .md-panel { display: none; }
+    li.has-detail { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
+    li.has-detail .md-item { border-bottom: none; }
+
+    .md-detail { display: none; padding: 0 1.25rem 1.5rem; background: var(--paper); }
+    .md-detail.mobile-open { display: block; animation: panel-in 0.3s ease; }
+
     .project-gallery { grid-template-columns: repeat(3, 1fr); }
     .project-gallery img { height: 78px; }
   }
@@ -777,9 +811,9 @@
     </div>
   </div>
   <div class="intro-inner intro-stats" style="align-items:flex-start;">
-    <div><div class="intro-stat-num" data-target="2" data-suffix="">0</div><div class="intro-stat-label">systems live in production</div></div>
-    <div><div class="intro-stat-num" data-target="50" data-suffix="+">0</div><div class="intro-stat-label">test cases designed &amp; executed</div></div>
-    <div><div class="intro-stat-num" data-target="4" data-suffix="+">0</div><div class="intro-stat-label">languages across the stack</div></div>
+    <div><div class="intro-stat-num" data-target="3" data-suffix="">0</div><div class="intro-stat-label">systems live in production</div></div>
+    <div><div class="intro-stat-num" data-target="40" data-suffix="">0</div><div class="intro-stat-label">test cases designed &amp; executed</div></div>
+    <div><div class="intro-stat-num" data-target="5" data-suffix="+">0</div><div class="intro-stat-label">languages across the stack</div></div>
   </div>
 </section>
 
@@ -794,60 +828,92 @@
         <div class="md-connector" id="mdConnector"></div>
 
         <li>
-          <button class="md-item active" data-target="p1">
-            <span class="md-item-title">Online Reservation &amp; Billing System</span>
-            <span class="md-item-role">Lead Programmer · Capstone</span>
-            <span class="md-item-status status-live"><span class="dot"></span>LIVE</span>
+          <button class="md-item" data-target="p1" aria-expanded="true">
+            <span class="md-item-main">
+              <span class="md-item-title">Online Reservation &amp; Billing System</span>
+              <span class="md-item-role">Lead Programmer · Capstone</span>
+              <span class="md-item-status status-live"><span class="dot"></span>LIVE</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p2">
-            <span class="md-item-title">KMA Business Solutions — Company Website</span>
-            <span class="md-item-role">Web Developer · OJT</span>
-            <span class="md-item-status status-live"><span class="dot"></span>LIVE</span>
+        <li>
+          <button class="md-item active" data-target="p2" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Resort Reservation &amp; Billing — React Rebuild</span>
+              <span class="md-item-role">Full-Stack Developer · Independent</span>
+              <span class="md-item-status status-live"><span class="dot"></span>LIVE</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
+          </button>
+        </li>
+       
+          <button class="md-item" data-target="p3" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">KMA Business Solutions — Company Website</span>
+              <span class="md-item-role">Web Developer · OJT</span>
+              <span class="md-item-status status-live"><span class="dot"></span>LIVE</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p3">
-            <span class="md-item-title">Bus Reservation System — Testing</span>
-            <span class="md-item-role">QA Tester · Coursework</span>
-            <span class="md-item-status status-qa"><span class="dot"></span>QA CASE STUDY</span>
+          <button class="md-item" data-target="p4" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Bus Reservation System — Testing</span>
+              <span class="md-item-role">QA Tester · Coursework</span>
+              <span class="md-item-status status-qa"><span class="dot"></span>QA CASE STUDY</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p4">
-            <span class="md-item-title">Premium E-Commerce Website</span>
-            <span class="md-item-role">Designer &amp; Developer · Personal</span>
-            <span class="md-item-status status-showcase"><span class="dot"></span>UI SHOWCASE</span>
+          <button class="md-item" data-target="p5" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Premium E-Commerce Website</span>
+              <span class="md-item-role">Designer &amp; Developer · Personal</span>
+              <span class="md-item-status status-showcase"><span class="dot"></span>UI SHOWCASE</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p5">
-            <span class="md-item-title">Multimedia — Photoshop &amp; Blender</span>
-            <span class="md-item-role">Digital Artist · Coursework</span>
-            <span class="md-item-status status-showcase"><span class="dot"></span>CREATIVE</span>
+          <button class="md-item" data-target="p6" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Multimedia — Photoshop &amp; Blender</span>
+              <span class="md-item-role">Digital Artist · Coursework</span>
+              <span class="md-item-status status-showcase"><span class="dot"></span>CREATIVE</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p6">
-            <span class="md-item-title">Apparel E-Commerce Website</span>
-            <span class="md-item-role">Frontend Developer · Group</span>
-            <span class="md-item-status status-archived"><span class="dot"></span>ARCHIVED</span>
+          <button class="md-item" data-target="p7" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Apparel E-Commerce Website</span>
+              <span class="md-item-role">Frontend Developer · Group</span>
+              <span class="md-item-status status-archived"><span class="dot"></span>ARCHIVED</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
         <li>
-          <button class="md-item" data-target="p7">
-            <span class="md-item-title">Dental Clinic Management System</span>
-            <span class="md-item-role">Project Leader · Mini Thesis</span>
-            <span class="md-item-status status-progress"><span class="dot"></span>IN PROGRESS</span>
+          <button class="md-item" data-target="p8" aria-expanded="false">
+            <span class="md-item-main">
+              <span class="md-item-title">Dental Clinic Management System</span>
+              <span class="md-item-role">Project Leader · Mini Thesis</span>
+              <span class="md-item-status status-progress"><span class="dot"></span>IN PROGRESS</span>
+            </span>
+            <span class="md-chevron" aria-hidden="true">⌄</span>
           </button>
         </li>
       </ul>
 
       <div class="md-panel">
 
-        <!-- P1 -->
-        <div class="md-detail active" id="p1">
+         <!-- P1 -->
+        <div class="md-detail" id="p1">
           <p class="project-role-tag">LEAD PROGRAMMER &amp; PROJECT LEADER<span class="sep">/</span>CAPSTONE · 3 SEMESTERS</p>
           <h3 class="project-title">Online Reservation &amp; Billing System</h3>
           <p class="project-desc">A fully deployed reservation and billing system built for Rainbow Forest Paradise Resort and Campsite in Tanay, Rizal — currently in active use by the company.</p>
@@ -866,17 +932,32 @@
           </div>
           <div class="project-links">
             <a href="https://www.rainbowforestparadiseresortandcampsite.com/" target="_blank" class="project-link">Visit live site →</a>
-            <button class="case-study-toggle" data-cs="cs-p1">→ read case study</button>
-          </div>
-          <div class="case-study-body" id="cs-p1">
-            <div class="case-study-block"><p class="case-study-label">the problem</p><p>Rainbow Forest Paradise Resort and Campsite managed reservations and billing manually, which made it hard to track bookings, avoid double-bookings, and keep billing records consistent as the business grew. They needed a system their staff could use directly, not just a one-off script.</p></div>
-            <div class="case-study-block"><p class="case-study-label">my role</p><p>I was Lead Programmer and Project Leader across all three semesters of development. That meant owning the technical architecture end-to-end — the database schema, the booking and billing logic, and the deployment — while also running client meetings, translating what the resort actually needed into a build plan, and coordinating the rest of the team.</p></div>
-            <div class="case-study-block"><p class="case-study-label">outcome</p><p>The system was deployed and is actively used by the resort today for real bookings and billing — it didn't stay a classroom exercise.</p></div>
           </div>
         </div>
 
-        <!-- P2 -->
-        <div class="md-detail" id="p2">
+        <!-- P2 — NEW: React Rebuild -->
+        <div class="md-detail active" id="p2">
+          <p class="project-role-tag">FULL-STACK DEVELOPER<span class="sep">/</span>INDEPENDENT PORTFOLIO PROJECT</p>
+          <h3 class="project-title">Resort Reservation &amp; Billing System — React Rebuild</h3>
+          <p class="project-desc">An independent rebuild of my capstone's core reservation and billing features as a modern full-stack app — React, Next.js, and a cloud-hosted database in place of the original PHP stack, built to prove I could take a live system further on my own.</p>
+          <ul class="project-bullets">
+            <li>Rebuilt core reservation and billing features using React, Next.js, and Tailwind CSS, with a custom UI system and Framer Motion animations</li>
+            <li>Built RESTful API routes connected to a cloud-hosted MySQL database (Railway), including double-booking prevention and client- and server-side validation</li>
+            <li>Implemented cookie-based admin authentication with route-protecting middleware and bcrypt password hashing</li>
+            <li>Deployed live via Vercel with a fully separated cloud database and environment configuration</li>
+          </ul>
+          <div class="project-tech">
+            <span class="tech-tag">React</span><span class="tech-tag">Next.js</span><span class="tech-tag">Tailwind CSS</span><span class="tech-tag">Framer Motion</span><span class="tech-tag">MySQL (Railway)</span><span class="tech-tag">Vercel</span>
+          </div>
+          <div class="project-links">
+            <a href="https://resort-react-lake.vercel.app/" target="_blank" class="project-link">Visit live site →</a>
+          </div>
+        </div>
+
+       
+
+        <!-- P3 -->
+        <div class="md-detail" id="p3">
           <p class="project-role-tag">WEB DEVELOPER<span class="sep">/</span>OJT PROJECT</p>
           <h3 class="project-title">KMA Business Solutions OPC — Company Website</h3>
           <p class="project-desc">Built the official company website for KMA Business Solutions OPC during internship, including a functional backend for contact inquiry and content management.</p>
@@ -894,31 +975,25 @@
           <div class="project-links"><a href="https://kmabusinessgroupph.com/" target="_blank" class="project-link">Visit live site →</a></div>
         </div>
 
-        <!-- P3 -->
-        <div class="md-detail" id="p3">
+        <!-- P4 -->
+        <div class="md-detail" id="p4">
           <p class="project-role-tag">QA TESTER<span class="sep">/</span>SOFTWARE QUALITY ASSURANCE COURSEWORK</p>
           <h3 class="project-title">Bus Reservation System — Test Case Design &amp; Execution</h3>
-          <p class="project-desc">Assigned as the QA on a team project, I designed and executed 50 structured test cases for a bus reservation system, covering functional flows like user registration and booking.</p>
+          <p class="project-desc">Assigned as the QA on a team project, I designed and executed 40 structured test cases for a bus reservation system, covering functional flows like user registration and booking.</p>
           <div class="project-gallery">
             <img loading="lazy" src="assets/images/qa-test.png" alt="Sample test case sheet for the bus reservation system" onclick="window.open(this.src)">
           </div>
           <ul class="project-bullets">
-            <li>Wrote 50 test cases with prerequisites, test data, step-by-step actions, and expected vs. actual results</li>
+            <li>Wrote 40 test cases with prerequisites, test data, step-by-step actions, and expected vs. actual results</li>
             <li>Tracked outcomes as Pass / Fail / Not Executed for each test run</li>
             <li>Applied positive and negative test case design to cover edge cases, not just the happy path</li>
             <li>Coordinated with a Business Analyst for test case review and sign-off</li>
           </ul>
           <div class="project-tech"><span class="tech-tag">Test Case Design</span><span class="tech-tag">Functional Testing</span><span class="tech-tag">Google Sheets</span></div>
-          <div class="project-links"><button class="case-study-toggle" data-cs="cs-p3">→ read case study</button></div>
-          <div class="case-study-body" id="cs-p3">
-            <div class="case-study-block"><p class="case-study-label">the problem</p><p>Our team needed a dedicated QA role to catch issues before they reached the rest of the group — someone to verify the bus reservation system actually behaved as intended across normal and edge-case inputs, not just the paths a developer tests while building.</p></div>
-            <div class="case-study-block"><p class="case-study-label">my role</p><p>As the assigned QA, I reviewed feature requirements, then wrote test cases covering each one — specifying prerequisites, exact test data, expected results, and a place to log actual results and status. I ran each case manually, logged Pass/Fail outcomes, and flagged discrepancies back to the team for fixes, then re-verified after changes were made.</p></div>
-            <div class="case-study-block"><p class="case-study-label">outcome</p><p>50 documented test cases across the system's core flows, with a clear audit trail of what was tested, with what data, and what the result was — the same habit of thoroughness I carried into my internship, where it helped me catch errors in client documents before submission.</p></div>
-          </div>
         </div>
 
-        <!-- P4 -->
-        <div class="md-detail" id="p4">
+        <!-- P5 -->
+        <div class="md-detail" id="p5">
           <p class="project-role-tag">DESIGNER &amp; DEVELOPER<span class="sep">/</span>PERSONAL PROJECT</p>
           <h3 class="project-title">Premium E-Commerce Website</h3>
           <p class="project-desc">A high-end e-commerce concept built to push my UI skills further — refined layout, product presentation, and cart flow beyond what my earlier coursework projects required.</p>
@@ -935,8 +1010,8 @@
           <div class="project-tech"><span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Figma</span></div>
         </div>
 
-        <!-- P5 -->
-        <div class="md-detail" id="p5">
+        <!-- P6 -->
+        <div class="md-detail" id="p6">
           <p class="project-role-tag">DIGITAL ARTIST<span class="sep">/</span>MULTIMEDIA COURSEWORK</p>
           <h3 class="project-title">Multimedia Project — Photoshop &amp; Blender</h3>
           <p class="project-desc">Outside of web work, I also explored digital art and 3D — a photo composite in Photoshop and rendered scenes in Blender, part of my multimedia coursework in college.</p>
@@ -955,8 +1030,8 @@
           <div class="project-tech"><span class="tech-tag">Adobe Photoshop</span><span class="tech-tag">Blender</span></div>
         </div>
 
-        <!-- P6 -->
-        <div class="md-detail" id="p6">
+        <!-- P7 -->
+        <div class="md-detail" id="p7">
           <p class="project-role-tag">FRONTEND DEVELOPER<span class="sep">/</span>INTEGRATIVE PROGRAMMING · GROUP PROJECT</p>
           <h3 class="project-title">Apparel E-Commerce Website</h3>
           <p class="project-desc">A full-stack e-commerce website for an apparel brand, built with a small team and deployed with a complete web hosting setup.</p>
@@ -973,8 +1048,8 @@
           <div class="project-tech"><span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">MySQL</span></div>
         </div>
 
-        <!-- P7 -->
-        <div class="md-detail" id="p7">
+        <!-- P8 -->
+        <div class="md-detail" id="p8">
           <p class="project-role-tag">PROJECT LEADER<span class="sep">/</span>MINI THESIS</p>
           <h3 class="project-title">Dental Clinic Management System</h3>
           <p class="project-desc">A system analysis and design project conducted with an actual dental clinic, from requirements gathering through to a working prototype.</p>
@@ -990,55 +1065,6 @@
   </div>
 </section>
 
-<!-- SKILLS — folder / binder -->
-<div class="folder-section reveal" id="skills">
-  <div class="inner">
-    <p class="section-label">stack</p>
-    <h2 class="section-title">What I work with</h2>
-
-    <div class="folder-stage">
-      <div class="folder-card">
-        <div class="folder-flap"></div>
-        <div class="folder-clip"></div>
-        <p class="folder-label">the toolbox</p>
-        <p class="folder-heading">What's inside</p>
-        <p class="folder-subheading">(everything I reach for, dev + QA)</p>
-
-        <div class="folder-tabs" id="folderTabs">
-          <button class="folder-tab active" data-pane="fl1">languages</button>
-          <button class="folder-tab" data-pane="fl2">web &amp; db</button>
-          <button class="folder-tab" data-pane="fl3">qa &amp; testing</button>
-          <button class="folder-tab" data-pane="fl4">design</button>
-          <button class="folder-tab" data-pane="fl5">dev tools</button>
-        </div>
-
-        <div class="folder-body" id="folderBody">
-          <div class="folder-pane active" id="fl1">
-            <p class="folder-pane-title">Languages</p>
-            <ul class="skill-list"><li>HTML &amp; CSS</li><li>JavaScript</li><li>Python</li><li>Java</li><li>C#</li></ul>
-          </div>
-          <div class="folder-pane" id="fl2">
-            <p class="folder-pane-title">Web &amp; Database</p>
-            <ul class="skill-list"><li>MySQL</li><li>XAMPP</li><li>Website hosting</li><li>Deployment</li></ul>
-          </div>
-          <div class="folder-pane" id="fl3">
-            <p class="folder-pane-title">QA &amp; Testing</p>
-            <ul class="skill-list"><li>Test Case Design</li><li>Test Plan Documentation</li><li>Functional / Black-box Testing</li><li>Bug &amp; Defect Tracking</li><li>Regression Testing (basic)</li></ul>
-          </div>
-          <div class="folder-pane" id="fl4">
-            <p class="folder-pane-title">Design &amp; Tools</p>
-            <ul class="skill-list"><li>Figma</li><li>Adobe Photoshop</li><li>Blender</li><li>Canva</li></ul>
-          </div>
-          <div class="folder-pane" id="fl5">
-            <p class="folder-pane-title">Dev Tools</p>
-            <ul class="skill-list"><li>Git &amp; GitHub</li><li>VS Code</li><li>MS Office</li><li>Google Workspace</li></ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ABOUT + EXPERIENCE -->
 <section id="about-experience" class="reveal">
   <div class="inner ae-grid">
@@ -1051,10 +1077,10 @@
         <span>BSIT '26 · UE Manila</span>
       </div>
       <div class="about-card">
-        <p>Fresh BSIT graduate from UE Manila who cares as much about how systems hold up as how they're built. I led a live capstone reservation system now used by a real resort, and separately designed 50+ test cases for a bus reservation system as QA.</p>
+        <p>Fresh BSIT graduate from UE Manila who cares as much about how systems hold up as how they're built. I led a live capstone reservation system now used by a real resort, then independently rebuilt its core features as a full-stack React/Next.js app — and separately designed 40 test cases for a bus reservation system as QA.</p>
         <p>During my internship at KMA Business Solutions OPC I built their company site from scratch and handled IT support — I like combining hands-on building with the discipline of testing things properly.</p>
         <div class="about-tags">
-          <span class="tag">full-stack</span><span class="tag">qa &amp; testing</span><span class="tag">detail-oriented</span><span class="tag">client-facing</span>
+          <span class="tag">react &amp; next.js</span><span class="tag">qa &amp; testing</span><span class="tag">javascript</span><span class="tag">php</span><span class="tag">detail-oriented</span><span class="tag">client-facing</span>
         </div>
       </div>
     </div>
@@ -1063,6 +1089,15 @@
       <p class="section-label">experience</p>
       <h2 class="section-title" style="font-size: clamp(1.4rem, 3vw, 1.8rem);">Experience &amp; Education</h2>
       <div class="exp-timeline">
+        <div class="exp-item">
+          <p class="exp-date">2026 · SELF-DIRECTED</p>
+          <h3 class="exp-title">React Rebuild — Resort Reservation &amp; Billing System</h3>
+          <p class="exp-company">Independent Project</p>
+          <ul class="exp-bullets">
+            <li>Rebuilt the capstone's core features as a full-stack React/Next.js app with a cloud-hosted database</li>
+            <li>Handled UI, API, authentication, and deployment independently, end to end</li>
+          </ul>
+        </div>
         <div class="exp-item">
           <p class="exp-date">DEC 2025 — MAR 2026</p>
           <h3 class="exp-title">Web Developer &amp; IT Support Intern</h3>
@@ -1089,7 +1124,7 @@
           <h3 class="exp-title">QA Tester — Project Management Coursework</h3>
           <p class="exp-company">University of the East · Group Project</p>
           <ul class="exp-bullets">
-            <li>Designed and executed 50 test cases for a bus reservation system</li>
+            <li>Designed and executed 40 test cases for a bus reservation system</li>
             <li>Documented defects and verified fixes through regression checks</li>
           </ul>
         </div>
@@ -1103,6 +1138,55 @@
 
   </div>
 </section>
+
+<!-- SKILLS — folder / binder -->
+<div class="folder-section reveal" id="skills">
+  <div class="inner">
+    <p class="section-label">stack</p>
+    <h2 class="section-title">What I work with</h2>
+
+    <div class="folder-stage">
+      <div class="folder-card">
+        <div class="folder-flap"></div>
+        <div class="folder-clip"></div>
+        <p class="folder-label">the toolbox</p>
+        <p class="folder-heading">What's inside</p>
+        <p class="folder-subheading">(everything I reach for, dev + QA)</p>
+
+        <div class="folder-tabs" id="folderTabs">
+          <button class="folder-tab active" data-pane="fl1">languages</button>
+          <button class="folder-tab" data-pane="fl2">frameworks &amp; db</button>
+          <button class="folder-tab" data-pane="fl3">qa &amp; testing</button>
+          <button class="folder-tab" data-pane="fl4">design</button>
+          <button class="folder-tab" data-pane="fl5">dev tools</button>
+        </div>
+
+        <div class="folder-body" id="folderBody">
+          <div class="folder-pane active" id="fl1">
+            <p class="folder-pane-title">Languages</p>
+            <ul class="skill-list"><li>HTML &amp; CSS</li><li>JavaScript</li><li>Python</li><li>Java</li><li>C#</li></ul>
+          </div>
+          <div class="folder-pane" id="fl2">
+            <p class="folder-pane-title">Frameworks &amp; Database</p>
+            <ul class="skill-list"><li>React</li><li>Next.js</li><li>Tailwind CSS</li><li>Framer Motion</li><li>MySQL</li><li>RESTful APIs</li><li>XAMPP</li><li>Website hosting &amp; deployment</li></ul>
+          </div>
+          <div class="folder-pane" id="fl3">
+            <p class="folder-pane-title">QA &amp; Testing</p>
+            <ul class="skill-list"><li>Test Case Design</li><li>Test Plan Documentation</li><li>Functional / Black-box Testing</li><li>Bug &amp; Defect Tracking</li><li>Regression Testing (basic)</li></ul>
+          </div>
+          <div class="folder-pane" id="fl4">
+            <p class="folder-pane-title">Design &amp; Tools</p>
+            <ul class="skill-list"><li>Figma</li><li>Adobe Photoshop</li><li>Blender</li><li>Canva</li></ul>
+          </div>
+          <div class="folder-pane" id="fl5">
+            <p class="folder-pane-title">Dev Tools</p>
+            <ul class="skill-list"><li>Git &amp; GitHub</li><li>VS Code</li><li>Vercel</li><li>Railway</li><li>MS Office</li><li>Google Workspace</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- CREDENTIALS -->
 <section id="credentials" class="reveal">
@@ -1156,7 +1240,7 @@
   </div>
 </div>
 
-<footer>// jezelle-formentera.dev · built with care · 2026</footer>
+<footer>// jezelle-formentera.dev · 2026</footer>
 
 <script>
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1294,51 +1378,98 @@
     updateActive();
   })();
 
-  /* PROJECTS master/detail */
+  /* PROJECTS — master/detail on desktop, single-column accordion on mobile.
+     Detail nodes are MOVED (not cloned) between the shared desktop panel and
+     each mobile row, so there's one copy of the content either way. */
   (function() {
     var list = document.getElementById('mdList');
-    var items = document.querySelectorAll('.md-item');
-    var details = document.querySelectorAll('.md-detail');
+    var panel = document.querySelector('.md-panel');
+    var items = Array.prototype.slice.call(document.querySelectorAll('.md-item'));
+    var details = Array.prototype.slice.call(document.querySelectorAll('.md-detail'));
     var connector = document.getElementById('mdConnector');
+    var mql = window.matchMedia('(max-width: 820px)');
+    var currentTarget = 'p1'; /* remembers which project is "selected" across breakpoints */
 
     function positionConnector(item) {
-      if (!connector || window.innerWidth <= 820) return;
+      if (!connector || mql.matches) return;
       var listRect = list.getBoundingClientRect();
       var itemRect = item.getBoundingClientRect();
       var top = (itemRect.top - listRect.top) + (itemRect.height / 2) - 1;
       connector.style.top = top + 'px';
     }
 
+    function detailFor(btn) { return document.getElementById(btn.getAttribute('data-target')); }
+
+    /* --- Desktop layout: one shared detail panel on the right --- */
+    function layoutDesktop() {
+      details.forEach(function(d) {
+        d.classList.remove('mobile-open');
+        d.classList.remove('active');
+        panel.appendChild(d); /* move every detail back into the shared panel, original order */
+      });
+      items.forEach(function(li) { li.parentElement.classList && li.parentElement.classList.remove('has-detail'); });
+
+      var activeBtn = items.filter(function(b) { return b.getAttribute('data-target') === currentTarget; })[0] || items[0];
+      items.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-expanded', 'false'); });
+      activeBtn.classList.add('active');
+      activeBtn.setAttribute('aria-expanded', 'true');
+      detailFor(activeBtn).classList.add('active');
+      requestAnimationFrame(function() { positionConnector(activeBtn); });
+    }
+
+    /* --- Mobile layout: each detail lives inside its own row, closed by default --- */
+    function layoutMobile() {
+      items.forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-expanded', 'false');
+        var d = detailFor(b);
+        d.classList.remove('active', 'mobile-open');
+        var li = b.parentElement;
+        li.appendChild(d); /* move the detail node into this row */
+        li.classList.add('has-detail');
+      });
+    }
+
+    function applyLayout() {
+      if (mql.matches) { layoutMobile(); } else { layoutDesktop(); }
+    }
+
     items.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        items.forEach(function(b) { b.classList.remove('active'); });
-        details.forEach(function(d) { d.classList.remove('active'); });
-        btn.classList.add('active');
-        var target = document.getElementById(btn.getAttribute('data-target'));
-        if (target) target.classList.add('active');
-        positionConnector(btn);
+        currentTarget = btn.getAttribute('data-target');
+        if (mql.matches) {
+          var target = detailFor(btn);
+          var wasOpen = target.classList.contains('mobile-open');
+          items.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-expanded', 'false'); });
+          details.forEach(function(d) { d.classList.remove('mobile-open'); });
+          if (!wasOpen) {
+            target.classList.add('mobile-open');
+            btn.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        } else {
+          items.forEach(function(b) { b.classList.remove('active'); });
+          details.forEach(function(d) { d.classList.remove('active'); });
+          btn.classList.add('active');
+          detailFor(btn).classList.add('active');
+          positionConnector(btn);
+        }
       });
     });
 
-    var activeItem = document.querySelector('.md-item.active');
-    if (activeItem) {
-      requestAnimationFrame(function() { positionConnector(activeItem); });
+    applyLayout();
+    if (typeof mql.addEventListener === 'function') {
+      mql.addEventListener('change', applyLayout);
+    } else if (typeof mql.addListener === 'function') {
+      mql.addListener(applyLayout); /* older Safari */
     }
     window.addEventListener('resize', function() {
-      var current = document.querySelector('.md-item.active');
-      if (current) positionConnector(current);
+      if (!mql.matches) {
+        var current = document.querySelector('.md-item.active');
+        if (current) positionConnector(current);
+      }
     });
   })();
-
-  /* case study toggles (event delegation) */
-  document.querySelectorAll('.case-study-toggle').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var body = document.getElementById(btn.getAttribute('data-cs'));
-      if (!body) return;
-      var open = body.classList.toggle('open');
-      btn.textContent = open ? '↑ hide case study' : '→ read case study';
-    });
-  });
 
   /* folder tabs */
   (function() {
